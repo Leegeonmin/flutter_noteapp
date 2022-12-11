@@ -6,27 +6,27 @@ class NoteRepositoryImpl implements NoteRepository {
   final NoteDB db;
   NoteRepositoryImpl(this.db);
   @override
-  Future<List<Note>> getNotes() {
-    throw UnimplementedError();
+  Future<List<Note>> getNotes() async {
+    return await db.getNotes();
   }
 
   @override
-  Future<Note> getNoteById(int id) {
-    throw UnimplementedError();
+  Future<Note?> getNoteById(int id) async {
+    return await db.getNoteById(id);
   }
 
   @override
-  Future<void> insertNote(Note note) {
-    throw UnimplementedError();
+  Future<void> insertNote(Note note) async {
+    await db.insertNote(note);
   }
 
   @override
-  Future<void> updateNote(Note note) {
-    throw UnimplementedError();
+  Future<void> updateNote(Note note) async {
+    await db.updateNote(note);
   }
 
   @override
-  Future<void> deleteNote(Note note) {
-    throw UnimplementedError();
+  Future<void> deleteNote(Note note) async {
+    await db.deleteNote(note);
   }
 }
