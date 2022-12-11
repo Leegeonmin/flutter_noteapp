@@ -1,9 +1,9 @@
-import 'package:flutter_noteapp/data/data_source/note_db.dart';
+import 'package:flutter_noteapp/data/data_source/note_db_helper.dart';
 import 'package:flutter_noteapp/domain/model/note.dart';
 import 'package:flutter_noteapp/domain/repository/note_repository.dart';
 
 class NoteRepositoryImpl implements NoteRepository {
-  final NoteDB db;
+  final NoteDbHelper db;
   NoteRepositoryImpl(this.db);
   @override
   Future<List<Note>> getNotes() async {
