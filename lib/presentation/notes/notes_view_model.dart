@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_noteapp/domain/model/note.dart';
 import 'package:flutter_noteapp/domain/repository/note_repository.dart';

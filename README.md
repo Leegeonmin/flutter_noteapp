@@ -28,3 +28,11 @@ samples, guidance on mobile development, and a full API reference.
 1. note model, repository를 활용한 use_case 작성
 2. note_view_model을 작성하기 앞서 view에서 발생되기록 예상되는 이벤트는 3가지(노트보기, 노트삭제, 노트되돌리기)그 외에도 발생하는 이벤트에 대해 컨트롤 하기 위해 freezed를 사용하여 note_event클래스 생성
 3. viewModel에서는 onEvent 메서드와 freezed의 when만을 사용해서 이벤트 분기처리
+
+# 12 - 13
+
+1. notes_view_model 의 상태를 관리할 notes_state 생성
+   -> fetch한 List<Note>의 상태관리
+2. add_edit_note_view_model 생성
+   -> event class 생성 =>view에서 발생할 모든 이벤트를 관리하는 역할
+   -> onEvent 메서드를 통해 모든 이벤트 처리
