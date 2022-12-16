@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_noteapp/presentation/notes/notes_view.dart';
+import 'package:flutter_noteapp/ui/colors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,30 +13,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.white,
+        backgroundColor: darkGray,
+        canvasColor: darkGray,
+        floatingActionButtonTheme: Theme.of(context)
+            .floatingActionButtonTheme
+            .copyWith(backgroundColor: lightBlue, foregroundColor: darkGray),
+        appBarTheme:
+            Theme.of(context).appBarTheme.copyWith(backgroundColor: darkGray),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(),
+      home: const NotesView(),
     );
   }
 }
