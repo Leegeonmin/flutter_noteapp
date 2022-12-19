@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_noteapp/domain/model/note.dart';
+import 'package:flutter_noteapp/presentation/add_edit_note/add_edit_note_event.dart';
+import 'package:flutter_noteapp/presentation/add_edit_note/add_edit_note_view_model.dart';
 import 'package:flutter_noteapp/ui/colors.dart';
+import 'package:provider/provider.dart';
 
 class AddEditNoteView extends StatefulWidget {
-  const AddEditNoteView({super.key});
+  final Note? note;
+  const AddEditNoteView({super.key, this.note});
 
   @override
   State<AddEditNoteView> createState() => _AddEditNoteViewState();
@@ -19,7 +24,6 @@ class _AddEditNoteViewState extends State<AddEditNoteView> {
     illusion
   ];
 
-  Color _color = roseBud;
   @override
   void dispose() {
     _titleController.dispose();
@@ -29,16 +33,27 @@ class _AddEditNoteViewState extends State<AddEditNoteView> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<AddEditNoteViewModel>();
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          if (_titleController.text.isEmpty ||
+              _contentController.text.isEmpty) {
+            const snackBar = SnackBar(content: Text("제목이나 내용이 비어있습니다"));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+          viewModel.onEvent(AddEditNoteEvent.addNotes(
+              widget.note == null ? null : widget.note!.id,
+              _titleController.text,
+              _contentController.text));
+        },
         child: const Icon(Icons.save),
       ),
       body: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding:
             const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 48),
-        color: _color,
+        color: Color(viewModel.color),
         child: Column(
           children: [
             Row(
@@ -46,13 +61,12 @@ class _AddEditNoteViewState extends State<AddEditNoteView> {
               children: noteColors
                   .map((color) => GestureDetector(
                         onTap: () {
-                          setState(() {
-                            _color = color;
-                          });
+                          viewModel.onEvent(
+                              AddEditNoteEvent.changeColor(color.value));
                         },
                         child: BuildBackgroundColor(
                           color: color,
-                          isSelected: _color == color,
+                          isSelected: viewModel.color == color.value,
                         ),
                       ))
                   .toList(),
