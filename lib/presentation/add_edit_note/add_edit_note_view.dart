@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_noteapp/domain/model/note.dart';
 import 'package:flutter_noteapp/presentation/add_edit_note/add_edit_note_event.dart';
@@ -16,6 +18,7 @@ class AddEditNoteView extends StatefulWidget {
 class _AddEditNoteViewState extends State<AddEditNoteView> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
+  StreamSubscription? _streamSubscription;
   final List<Color> noteColors = [
     roseBud,
     primRose,
@@ -30,7 +33,7 @@ class _AddEditNoteViewState extends State<AddEditNoteView> {
     super.initState();
     Future.microtask(() {
       final viewModel = context.read<AddEditNoteViewModel>();
-      viewModel.eventStream.listen((event) {
+      _streamSubscription = viewModel.eventStream.listen((event) {
         event.when(saveNote: () {
           Navigator.pop(context, true);
         });
@@ -40,6 +43,8 @@ class _AddEditNoteViewState extends State<AddEditNoteView> {
 
   @override
   void dispose() {
+    _streamSubscription?.cancel();
+
     _titleController.dispose();
     _contentController.dispose();
     super.dispose();

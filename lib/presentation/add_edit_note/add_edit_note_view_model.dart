@@ -19,7 +19,7 @@ class AddEditNoteViewModel with ChangeNotifier {
   int _color = roseBud.value;
   int get color => _color;
 
-  final _eventController = StreamController<AddEditNoteUiEvent>();
+  final _eventController = StreamController<AddEditNoteUiEvent>.broadcast();
   Stream<AddEditNoteUiEvent> get eventStream => _eventController.stream;
   Future<void> _changeColor(int color) async {
     _color = color;

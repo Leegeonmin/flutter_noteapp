@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_noteapp/domain/model/note.dart';
 import 'package:flutter_noteapp/presentation/add_edit_note/add_edit_note_view.dart';
 import 'package:flutter_noteapp/presentation/notes/components/note_item.dart';
+import 'package:flutter_noteapp/presentation/notes/notes_event.dart';
 import 'package:flutter_noteapp/presentation/notes/notes_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -21,11 +21,15 @@ class NotesView extends StatelessWidget {
         actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.sort))],
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
+          onPressed: () async {
+            bool? isSaved = await Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const AddEditNoteView()));
+
+            if (isSaved != null && isSaved == true) {
+              viewModel.onEvent(NotesEvent.loadNotes());
+            }
           },
           child: const Icon(Icons.add)),
       body: ListView(
