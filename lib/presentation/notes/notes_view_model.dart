@@ -6,7 +6,9 @@ import 'package:flutter_noteapp/presentation/notes/notes_state.dart';
 
 class NotesViewModel with ChangeNotifier {
   final NoteRepository repository;
-  NotesViewModel(this.repository);
+  NotesViewModel(this.repository) {
+    _loadNotes();
+  }
 
   NotesState _state = NotesState(notes: []);
   NotesState get state => _state;

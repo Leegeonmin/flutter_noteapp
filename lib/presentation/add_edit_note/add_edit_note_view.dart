@@ -25,6 +25,20 @@ class _AddEditNoteViewState extends State<AddEditNoteView> {
   ];
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.microtask(() {
+      final viewModel = context.read<AddEditNoteViewModel>();
+      viewModel.eventStream.listen((event) {
+        event.when(saveNote: () {
+          Navigator.pop(context, true);
+        });
+      });
+    });
+  }
+
+  @override
   void dispose() {
     _titleController.dispose();
     _contentController.dispose();

@@ -1,7 +1,11 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter_noteapp/domain/model/note.dart';
 import 'package:flutter_noteapp/domain/repository/note_repository.dart';
 import 'package:flutter_noteapp/presentation/add_edit_note/add_edit_note_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_noteapp/presentation/add_edit_note/add_edit_note_ui_event.dart';
 import 'package:flutter_noteapp/ui/colors.dart';
 
 class AddEditNoteViewModel with ChangeNotifier {
@@ -15,6 +19,8 @@ class AddEditNoteViewModel with ChangeNotifier {
   int _color = roseBud.value;
   int get color => _color;
 
+  final _eventController = StreamController<AddEditNoteUiEvent>();
+  Stream<AddEditNoteUiEvent> get eventStream => _eventController.stream;
   Future<void> _changeColor(int color) async {
     _color = color;
     notifyListeners();
@@ -39,5 +45,6 @@ class AddEditNoteViewModel with ChangeNotifier {
             color: _color),
       );
     }
+    _eventController.add(const AddEditNoteUiEvent.saveNote());
   }
 }

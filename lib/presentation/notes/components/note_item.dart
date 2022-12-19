@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_noteapp/domain/model/note.dart';
 
 class NoteItem extends StatelessWidget {
-  const NoteItem({super.key});
+  final Note note;
+  const NoteItem({super.key, required this.note});
 
   @override
   Widget build(BuildContext context) {
@@ -11,13 +12,13 @@ class NoteItem extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: Colors.lightBlue,
+          color: Color(note.color),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(15, 10, 0, 0),
             child: Text(
-              "title",
+              note.title,
               style: Theme.of(context).textTheme.headline6,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -29,7 +30,7 @@ class NoteItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "test",
+                  note.content,
                   style: Theme.of(context).textTheme.bodyText2,
                   maxLines: 10,
                   overflow: TextOverflow.ellipsis,
