@@ -38,6 +38,16 @@ class NotesView extends StatelessWidget {
                     note: e,
                     onDeleteTap: () {
                       viewModel.onEvent(NotesEvent.deleteNotes(e));
+                      final snackBar = SnackBar(
+                        content: Text("노트가 삭제되었습니다"),
+                        action: SnackBarAction(
+                          label: "취소",
+                          onPressed: () {
+                            viewModel.onEvent(NotesEvent.undoNotes());
+                          },
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     },
                   ))
               .toList()),
