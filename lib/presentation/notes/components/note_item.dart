@@ -3,7 +3,8 @@ import 'package:flutter_noteapp/domain/model/note.dart';
 
 class NoteItem extends StatelessWidget {
   final Note note;
-  const NoteItem({super.key, required this.note});
+  final void Function() onDeleteTap;
+  const NoteItem({super.key, required this.note, required this.onDeleteTap});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class NoteItem extends StatelessWidget {
                   maxLines: 10,
                   overflow: TextOverflow.ellipsis,
                 ),
-                IconButton(onPressed: () {}, icon: Icon(Icons.recycling))
+                IconButton(onPressed: onDeleteTap, icon: Icon(Icons.recycling))
               ],
             ),
           )

@@ -36,6 +36,9 @@ class NotesView extends StatelessWidget {
           children: viewModel.state.notes
               .map((e) => NoteItem(
                     note: e,
+                    onDeleteTap: () {
+                      viewModel.onEvent(NotesEvent.deleteNotes(e));
+                    },
                   ))
               .toList()),
     );
