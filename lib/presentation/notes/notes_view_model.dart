@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_noteapp/domain/model/note.dart';
 import 'package:flutter_noteapp/domain/use_case/use_cases.dart';
+import 'package:flutter_noteapp/domain/util/note_order.dart';
+import 'package:flutter_noteapp/domain/util/order_type.dart';
 import 'package:flutter_noteapp/presentation/notes/notes_event.dart';
 import 'package:flutter_noteapp/presentation/notes/notes_state.dart';
 
@@ -10,7 +12,8 @@ class NotesViewModel with ChangeNotifier {
     _loadNotes();
   }
 
-  NotesState _state = NotesState(notes: []);
+  NotesState _state = NotesState(
+      notes: [], noteOrder: const NoteOrder.date(OrderType.descending()));
   NotesState get state => _state;
 
   Note? _recentlyDeletedNote;
@@ -24,7 +27,7 @@ class NotesViewModel with ChangeNotifier {
   }
 
   Future<void> _loadNotes() async {
-    List<Note> _notes = await useCases.getNotesUseCase();
+    List<Note> _notes = await useCases.getNotesUseCase(state.noteOrder);
     _state = _state.copyWith(notes: _notes);
     notifyListeners();
   }
