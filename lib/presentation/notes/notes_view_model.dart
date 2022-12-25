@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_noteapp/domain/model/note.dart';
-import 'package:flutter_noteapp/domain/repository/note_repository.dart';
+import 'package:flutter_noteapp/domain/use_case/use_cases.dart';
 import 'package:flutter_noteapp/presentation/notes/notes_event.dart';
 import 'package:flutter_noteapp/presentation/notes/notes_state.dart';
 
 class NotesViewModel with ChangeNotifier {
-  final NoteRepository repository;
-  NotesViewModel(this.repository) {
+  final UseCases useCases;
+  NotesViewModel(this.useCases) {
     _loadNotes();
   }
 
@@ -24,20 +24,20 @@ class NotesViewModel with ChangeNotifier {
   }
 
   Future<void> _loadNotes() async {
-    List<Note> _notes = await repository.getNotes();
+    List<Note> _notes = await useCases.getNotesUseCase();
     _state = _state.copyWith(notes: _notes);
     notifyListeners();
   }
 
   Future<void> _deleteNotes(Note note) async {
-    await repository.deleteNote(note);
+    await useCases.deleteNoteUseCase(note);
     _recentlyDeletedNote = note;
     await _loadNotes();
   }
 
   Future<void> _undoNote() async {
     if (_recentlyDeletedNote != null) {
-      repository.insertNote(_recentlyDeletedNote!);
+      useCases.insertNoteUseCase(_recentlyDeletedNote!);
       _recentlyDeletedNote = null;
       _loadNotes();
     }
