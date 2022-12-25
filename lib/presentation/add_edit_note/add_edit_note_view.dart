@@ -31,12 +31,22 @@ class _AddEditNoteViewState extends State<AddEditNoteView> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    if (widget.note != null) {
+      _titleController.text = widget.note!.title;
+      _contentController.text = widget.note!.content;
+    }
     Future.microtask(() {
       final viewModel = context.read<AddEditNoteViewModel>();
       _streamSubscription = viewModel.eventStream.listen((event) {
-        event.when(saveNote: () {
-          Navigator.pop(context, true);
-        });
+        event.when(
+          saveNote: () {
+            Navigator.pop(context, true);
+          },
+          showSnackBar: (message) {
+            final snackBar = SnackBar(content: Text(message));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          },
+        );
       });
     });
   }
@@ -44,7 +54,6 @@ class _AddEditNoteViewState extends State<AddEditNoteView> {
   @override
   void dispose() {
     _streamSubscription?.cancel();
-
     _titleController.dispose();
     _contentController.dispose();
     super.dispose();
@@ -56,11 +65,12 @@ class _AddEditNoteViewState extends State<AddEditNoteView> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (_titleController.text.isEmpty ||
-              _contentController.text.isEmpty) {
-            const snackBar = SnackBar(content: Text("제목이나 내용이 비어있습니다"));
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
+          // if (_titleController.text.isEmpty ||
+          //     _contentController.text.isEmpty) {
+          //   const snackBar = SnackBar(content: Text("제목이나 내용이 비어있습니다"));
+          //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          //   return;
+          // }
           viewModel.onEvent(AddEditNoteEvent.addNotes(
               widget.note == null ? null : widget.note!.id,
               _titleController.text,

@@ -34,21 +34,32 @@ class NotesView extends StatelessWidget {
           child: const Icon(Icons.add)),
       body: ListView(
           children: viewModel.state.notes
-              .map((e) => NoteItem(
-                    note: e,
-                    onDeleteTap: () {
-                      viewModel.onEvent(NotesEvent.deleteNotes(e));
-                      final snackBar = SnackBar(
-                        content: Text("노트가 삭제되었습니다"),
-                        action: SnackBarAction(
-                          label: "취소",
-                          onPressed: () {
-                            viewModel.onEvent(NotesEvent.undoNotes());
-                          },
-                        ),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              .map((e) => GestureDetector(
+                    onTap: () async {
+                      bool? isSaved = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddEditNoteView(note: e)));
+                      if (isSaved != null && isSaved == true) {
+                        viewModel.onEvent(NotesEvent.loadNotes());
+                      }
                     },
+                    child: NoteItem(
+                      note: e,
+                      onDeleteTap: () {
+                        viewModel.onEvent(NotesEvent.deleteNotes(e));
+                        final snackBar = SnackBar(
+                          content: Text("노트가 삭제되었습니다"),
+                          action: SnackBarAction(
+                            label: "취소",
+                            onPressed: () {
+                              viewModel.onEvent(NotesEvent.undoNotes());
+                            },
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      },
+                    ),
                   ))
               .toList()),
     );

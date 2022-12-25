@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter_noteapp/domain/model/note.dart';
 import 'package:flutter_noteapp/domain/repository/note_repository.dart';
@@ -27,6 +26,10 @@ class AddEditNoteViewModel with ChangeNotifier {
   }
 
   Future<void> _addNotes(int? id, String title, String content) async {
+    if (title.isEmpty || content.isEmpty) {
+      _eventController.add(AddEditNoteUiEvent.showSnackBar("제목이나 내용이 비어있습니다"));
+      return;
+    }
     if (id == null) {
       await repository.insertNote(
         Note(
